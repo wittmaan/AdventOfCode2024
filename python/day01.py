@@ -16,7 +16,7 @@ sample_input = """3   4
 )
 
 
-def build_lists(lines):
+def parse_input(lines: List[str]) -> (List[int], List[int]):
     left_list = []
     right_list = []
     for line in lines:
@@ -26,20 +26,16 @@ def build_lists(lines):
     return left_list, right_list
 
 
-def calculate_total_distance(lines: List[str]):
-    left_list, right_list = build_lists(lines)
-
+def calculate_total_distance(lines: List[str]) -> int:
+    left_list, right_list = parse_input(lines)
     left_list.sort()
     right_list.sort()
-
-    total_distance = sum(abs(a - b) for a, b in zip(left_list, right_list))
-    return total_distance
+    return sum(abs(a - b) for a, b in zip(left_list, right_list))
 
 
 assert calculate_total_distance(sample_input) == 11
 
 puzzle_input = [line.rstrip() for line in fileinput.input()]
-
 solution_part1 = calculate_total_distance(puzzle_input)
 
 assert solution_part1 == 3246517
@@ -49,13 +45,10 @@ print(f"solution part1: {solution_part1}")
 # --- Part two ---
 
 
-def calculate_similarity_score(lines: List[str]):
-    left_list, right_list = build_lists(lines)
-
+def calculate_similarity_score(lines: List[str]) -> int:
+    left_list, right_list = parse_input(lines)
     right_count = Counter(right_list)
-    similarity_score = sum(num * right_count[num] for num in left_list)
-
-    return similarity_score
+    return sum(num * right_count[num] for num in left_list)
 
 
 assert calculate_similarity_score(sample_input) == 31
