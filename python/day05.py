@@ -1,6 +1,6 @@
 import fileinput
 from collections import defaultdict, deque
-from typing import List, Tuple, Dict, Set
+from typing import Dict, List, Set, Tuple
 
 # --- Day 5: Print Queue ---
 # --- Part one ---
