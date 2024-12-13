@@ -28,7 +28,7 @@ def parse_map(grid):
                 if cell not in antennas:
                     antennas[cell] = []
                 antennas[cell].append((x, y))
-    return antennas
+    return antennas, len(grid[0]), len(grid)
 
 
 def find_antinodes(antennas, grid_width, grid_height):
@@ -56,8 +56,8 @@ def find_antinodes(antennas, grid_width, grid_height):
 
 
 def calc_total_unique_antinodes(grid):
-    antennas = parse_map(grid)
-    antinodes = find_antinodes(antennas, len(grid[0]), len(grid))
+    antennas, width, height = parse_map(grid)
+    antinodes = find_antinodes(antennas, width, height)
     return len(antinodes)
 
 
@@ -68,3 +68,37 @@ solution_part1 = calc_total_unique_antinodes(puzzle_input)
 
 assert solution_part1 == 259
 print(f"solution part1: {solution_part1}")
+
+# --- Part two ---
+
+
+def calc_antinodes(input_map):
+    antenna_positions, width, height = parse_map(input_map)
+    antinodes = set()
+
+    for frequency, positions in antenna_positions.items():
+        if len(positions) > 1:
+            for i in range(len(positions)):
+                for j in range(i + 1, len(positions)):
+                    x1, y1 = positions[i]
+                    x2, y2 = positions[j]
+                    dx, dy = x2 - x1, y2 - y1
+
+                    while 0 <= y1 < height and 0 <= x1 < width:
+                        antinodes.add((y1, x1))
+                        x1 -= dx
+                        y1 -= dy
+
+                    while 0 <= x2 < height and 0 <= y2 < width:
+                        antinodes.add((y2, x2))
+                        x2 += dx
+                        y2 += dy
+
+    return len(antinodes)
+
+
+assert calc_antinodes(sample_input) == 34
+solution_part2 = calc_antinodes(puzzle_input)
+
+assert solution_part2 == 927
+print(f"solution part2: {solution_part2}")
